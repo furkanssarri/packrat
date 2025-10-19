@@ -4,7 +4,10 @@
   "description": "a stripped-down file-uploader / cloud drive implementation.",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch server/app.js"
+    "start": "node --watch server/app.js",
+    "migrate": "prisma migrate dev --schema ./server/prisma/schema.prisma",
+    "generate": "prisma generate --schema ./server/prisma/schema.prisma",
+    "studio": "prisma studio --schema ./server/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
@@ -27,7 +30,9 @@
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
+    "method-override": "^3.0.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3"
