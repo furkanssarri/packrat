@@ -1,0 +1,38 @@
+{
+  "name": "pigeon",
+  "version": "1.0.0",
+  "description": "a stripped-down file-uploader / cloud drive implementation.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/furkanssarri/pigeon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/furkanssarri/pigeon/issues"
+  },
+  "homepage": "https://github.com/furkanssarri/pigeon#readme",
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.17.1"
+  }
+}

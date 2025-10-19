@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  firstName String?
+  lastName  String?
+  password  String //Hashed pw
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  role      Role     @default(USER)
+
+  // Relations
+  sessions Session[]
+  File     File[]
+  Folder   Folder[]
+}
+
+model File {
+  id          String   @id @default(cuid())
+  name        String // Original filename
+  storageName String // Unique name in storage (S3/local)
+  size        Int // File size in bytes
+  type        String // MIME type
+  path        String // Virtual path in the app
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  folderId String?
+  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  // Optional: File sharing
+  shares      Share[]
+  FileVersion FileVersion[]
+}
+
+model Folder {
+  id        String   @id @default(cuid())
+  name      String
+  path      String // Virtual path
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations - Self-referential for nested folders
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  parentId String?
+  parent   Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children Folder[] @relation("FolderHierarchy")
+
+  files File[]
+  Share Share[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Share {
+  id        String    @id @default(cuid())
+  token     String    @unique // For shareable links
+  fileId    String?
+  file      File?     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  folderId  String?
+  folder    Folder?   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  expiresAt DateTime?
+  password  String? // Optional password protection
+  createdAt DateTime  @default(now())
+
+  // Ensure either file OR folder is shared, not both
+  @@unique([fileId, folderId])
+}
+
+model FileVersion {
+  id          String   @id @default(cuid())
+  fileId      String
+  file        File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  storageName String // Unique name for this version
+  version     Int // Version number
+  size        Int
+  createdAt   DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
