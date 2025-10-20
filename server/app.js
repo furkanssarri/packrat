@@ -11,6 +11,7 @@ import "./config/passport.js";
 
 import authRouter from "./routes/authRouter.js";
 import indexRouter from "./routes/indexRouter.js";
+import dashboardRouter from "./routes/dashboardRouter.js";
 
 dotenv.config();
 const app = express();
@@ -58,6 +59,7 @@ app.use((_req, res, next) => {
 });
 
 app.use("/auth", authRouter);
+app.use("/dashboard", dashboardRouter);
 
 app.use("/", indexRouter);
 
