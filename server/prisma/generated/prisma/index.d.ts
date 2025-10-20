@@ -1332,13 +1332,11 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sessions: number
     File: number
     Folder: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     File?: boolean | UserCountOutputTypeCountFileArgs
     Folder?: boolean | UserCountOutputTypeCountFolderArgs
   }
@@ -1352,13 +1350,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
   }
 
   /**
@@ -1486,6 +1477,7 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     password: string | null
+    salt: string | null
     createdAt: Date | null
     updatedAt: Date | null
     role: $Enums.Role | null
@@ -1498,6 +1490,7 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     password: string | null
+    salt: string | null
     createdAt: Date | null
     updatedAt: Date | null
     role: $Enums.Role | null
@@ -1510,6 +1503,7 @@ export namespace Prisma {
     firstName: number
     lastName: number
     password: number
+    salt: number
     createdAt: number
     updatedAt: number
     role: number
@@ -1524,6 +1518,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     password?: true
+    salt?: true
     createdAt?: true
     updatedAt?: true
     role?: true
@@ -1536,6 +1531,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     password?: true
+    salt?: true
     createdAt?: true
     updatedAt?: true
     role?: true
@@ -1548,6 +1544,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     password?: true
+    salt?: true
     createdAt?: true
     updatedAt?: true
     role?: true
@@ -1633,6 +1630,7 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     password: string
+    salt: string
     createdAt: Date
     updatedAt: Date
     role: $Enums.Role
@@ -1662,10 +1660,10 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     password?: boolean
+    salt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     role?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     File?: boolean | User$FileArgs<ExtArgs>
     Folder?: boolean | User$FolderArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1678,6 +1676,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     password?: boolean
+    salt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     role?: boolean
@@ -1690,6 +1689,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     password?: boolean
+    salt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     role?: boolean
@@ -1702,14 +1702,14 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     password?: boolean
+    salt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     role?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "firstName" | "lastName" | "password" | "createdAt" | "updatedAt" | "role", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "firstName" | "lastName" | "password" | "salt" | "createdAt" | "updatedAt" | "role", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     File?: boolean | User$FileArgs<ExtArgs>
     Folder?: boolean | User$FolderArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1720,7 +1720,6 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       File: Prisma.$FilePayload<ExtArgs>[]
       Folder: Prisma.$FolderPayload<ExtArgs>[]
     }
@@ -1731,6 +1730,7 @@ export namespace Prisma {
       firstName: string | null
       lastName: string | null
       password: string
+      salt: string
       createdAt: Date
       updatedAt: Date
       role: $Enums.Role
@@ -2128,7 +2128,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     File<T extends User$FileArgs<ExtArgs> = {}>(args?: Subset<T, User$FileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Folder<T extends User$FolderArgs<ExtArgs> = {}>(args?: Subset<T, User$FolderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2166,6 +2165,7 @@ export namespace Prisma {
     readonly firstName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly salt: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly role: FieldRef<"User", 'Role'>
@@ -2554,30 +2554,6 @@ export namespace Prisma {
      * Limit how many Users to delete.
      */
     limit?: number
-  }
-
-  /**
-   * User.sessions
-   */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Session
-     */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Session
-     */
-    omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -5111,52 +5087,46 @@ export namespace Prisma {
 
   export type SessionMinAggregateOutputType = {
     id: string | null
-    userId: string | null
-    token: string | null
+    sid: string | null
+    data: string | null
     expiresAt: Date | null
-    createdAt: Date | null
   }
 
   export type SessionMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
-    token: string | null
+    sid: string | null
+    data: string | null
     expiresAt: Date | null
-    createdAt: Date | null
   }
 
   export type SessionCountAggregateOutputType = {
     id: number
-    userId: number
-    token: number
+    sid: number
+    data: number
     expiresAt: number
-    createdAt: number
     _all: number
   }
 
 
   export type SessionMinAggregateInputType = {
     id?: true
-    userId?: true
-    token?: true
+    sid?: true
+    data?: true
     expiresAt?: true
-    createdAt?: true
   }
 
   export type SessionMaxAggregateInputType = {
     id?: true
-    userId?: true
-    token?: true
+    sid?: true
+    data?: true
     expiresAt?: true
-    createdAt?: true
   }
 
   export type SessionCountAggregateInputType = {
     id?: true
-    userId?: true
-    token?: true
+    sid?: true
+    data?: true
     expiresAt?: true
-    createdAt?: true
     _all?: true
   }
 
@@ -5234,10 +5204,9 @@ export namespace Prisma {
 
   export type SessionGroupByOutputType = {
     id: string
-    userId: string
-    token: string
+    sid: string
+    data: string
     expiresAt: Date
-    createdAt: Date
     _count: SessionCountAggregateOutputType | null
     _min: SessionMinAggregateOutputType | null
     _max: SessionMaxAggregateOutputType | null
@@ -5259,61 +5228,42 @@ export namespace Prisma {
 
   export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    token?: boolean
+    sid?: boolean
+    data?: boolean
     expiresAt?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    token?: boolean
+    sid?: boolean
+    data?: boolean
     expiresAt?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    token?: boolean
+    sid?: boolean
+    data?: boolean
     expiresAt?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectScalar = {
     id?: boolean
-    userId?: boolean
-    token?: boolean
+    sid?: boolean
+    data?: boolean
     expiresAt?: boolean
-    createdAt?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "token" | "expiresAt" | "createdAt", ExtArgs["result"]["session"]>
-  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type SessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sid" | "data" | "expiresAt", ExtArgs["result"]["session"]>
 
   export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Session"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
-      token: string
+      sid: string
+      data: string
       expiresAt: Date
-      createdAt: Date
     }, ExtArgs["result"]["session"]>
     composites: {}
   }
@@ -5708,7 +5658,6 @@ export namespace Prisma {
    */
   export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5739,10 +5688,9 @@ export namespace Prisma {
    */
   interface SessionFieldRefs {
     readonly id: FieldRef<"Session", 'String'>
-    readonly userId: FieldRef<"Session", 'String'>
-    readonly token: FieldRef<"Session", 'String'>
+    readonly sid: FieldRef<"Session", 'String'>
+    readonly data: FieldRef<"Session", 'String'>
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
-    readonly createdAt: FieldRef<"Session", 'DateTime'>
   }
     
 
@@ -5759,10 +5707,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * Filter, which Session to fetch.
      */
@@ -5782,10 +5726,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Session to fetch.
      */
     where: SessionWhereUniqueInput
@@ -5803,10 +5743,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * Filter, which Session to fetch.
      */
@@ -5856,10 +5792,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Session to fetch.
      */
     where?: SessionWhereInput
@@ -5908,10 +5840,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Sessions to fetch.
      */
     where?: SessionWhereInput
@@ -5955,10 +5883,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * The data needed to create a Session.
      */
     data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
@@ -5992,10 +5916,6 @@ export namespace Prisma {
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6010,10 +5930,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * The data needed to update a Session.
      */
@@ -6066,10 +5982,6 @@ export namespace Prisma {
      * Limit how many Sessions to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6084,10 +5996,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * The filter to search for the Session to update in case it exists.
      */
@@ -6114,10 +6022,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * Filter which Session to delete.
      */
@@ -6150,10 +6054,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
   }
 
 
@@ -8417,6 +8317,7 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     password: 'password',
+    salt: 'salt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     role: 'role'
@@ -8457,10 +8358,9 @@ export namespace Prisma {
 
   export const SessionScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    token: 'token',
-    expiresAt: 'expiresAt',
-    createdAt: 'createdAt'
+    sid: 'sid',
+    data: 'data',
+    expiresAt: 'expiresAt'
   };
 
   export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -8610,10 +8510,10 @@ export namespace Prisma {
     firstName?: StringNullableFilter<"User"> | string | null
     lastName?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
+    salt?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    sessions?: SessionListRelationFilter
     File?: FileListRelationFilter
     Folder?: FolderListRelationFilter
   }
@@ -8625,10 +8525,10 @@ export namespace Prisma {
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     password?: SortOrder
+    salt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     role?: SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
     File?: FileOrderByRelationAggregateInput
     Folder?: FolderOrderByRelationAggregateInput
   }
@@ -8643,10 +8543,10 @@ export namespace Prisma {
     firstName?: StringNullableFilter<"User"> | string | null
     lastName?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
+    salt?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    sessions?: SessionListRelationFilter
     File?: FileListRelationFilter
     Folder?: FolderListRelationFilter
   }, "id" | "email" | "username">
@@ -8658,6 +8558,7 @@ export namespace Prisma {
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     password?: SortOrder
+    salt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     role?: SortOrder
@@ -8676,6 +8577,7 @@ export namespace Prisma {
     firstName?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringWithAggregatesFilter<"User"> | string
+    salt?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
@@ -8859,40 +8761,33 @@ export namespace Prisma {
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
     id?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    token?: StringFilter<"Session"> | string
+    sid?: StringFilter<"Session"> | string
+    data?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
+    sid?: SortOrder
+    data?: SortOrder
     expiresAt?: SortOrder
-    createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
   }
 
   export type SessionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    token?: string
+    sid?: string
     AND?: SessionWhereInput | SessionWhereInput[]
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
-    userId?: StringFilter<"Session"> | string
+    data?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "token">
+  }, "id" | "sid">
 
   export type SessionOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
+    sid?: SortOrder
+    data?: SortOrder
     expiresAt?: SortOrder
-    createdAt?: SortOrder
     _count?: SessionCountOrderByAggregateInput
     _max?: SessionMaxOrderByAggregateInput
     _min?: SessionMinOrderByAggregateInput
@@ -8903,10 +8798,9 @@ export namespace Prisma {
     OR?: SessionScalarWhereWithAggregatesInput[]
     NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Session"> | string
-    userId?: StringWithAggregatesFilter<"Session"> | string
-    token?: StringWithAggregatesFilter<"Session"> | string
+    sid?: StringWithAggregatesFilter<"Session"> | string
+    data?: StringWithAggregatesFilter<"Session"> | string
     expiresAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
-    createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
   }
 
   export type ShareWhereInput = {
@@ -9047,10 +8941,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionCreateNestedManyWithoutUserInput
     File?: FileCreateNestedManyWithoutUserInput
     Folder?: FolderCreateNestedManyWithoutUserInput
   }
@@ -9062,10 +8956,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     File?: FileUncheckedCreateNestedManyWithoutUserInput
     Folder?: FolderUncheckedCreateNestedManyWithoutUserInput
   }
@@ -9077,10 +8971,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     File?: FileUpdateManyWithoutUserNestedInput
     Folder?: FolderUpdateManyWithoutUserNestedInput
   }
@@ -9092,10 +8986,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     File?: FileUncheckedUpdateManyWithoutUserNestedInput
     Folder?: FolderUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -9107,6 +9001,7 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
@@ -9119,6 +9014,7 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -9131,6 +9027,7 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -9322,57 +9219,51 @@ export namespace Prisma {
 
   export type SessionCreateInput = {
     id?: string
-    token: string
+    sid: string
+    data: string
     expiresAt: Date | string
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSessionsInput
   }
 
   export type SessionUncheckedCreateInput = {
     id?: string
-    userId: string
-    token: string
+    sid: string
+    data: string
     expiresAt: Date | string
-    createdAt?: Date | string
   }
 
   export type SessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
+    sid?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
   }
 
   export type SessionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
+    sid?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionCreateManyInput = {
     id?: string
-    userId: string
-    token: string
+    sid: string
+    data: string
     expiresAt: Date | string
-    createdAt?: Date | string
   }
 
   export type SessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
+    sid?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
+    sid?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ShareCreateInput = {
@@ -9553,12 +9444,6 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
   export type FileListRelationFilter = {
     every?: FileWhereInput
     some?: FileWhereInput
@@ -9576,10 +9461,6 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type FileOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -9595,6 +9476,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     password?: SortOrder
+    salt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     role?: SortOrder
@@ -9607,6 +9489,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     password?: SortOrder
+    salt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     role?: SortOrder
@@ -9619,6 +9502,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     password?: SortOrder
+    salt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     role?: SortOrder
@@ -9836,26 +9720,23 @@ export namespace Prisma {
 
   export type SessionCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
+    sid?: SortOrder
+    data?: SortOrder
     expiresAt?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type SessionMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
+    sid?: SortOrder
+    data?: SortOrder
     expiresAt?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type SessionMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
+    sid?: SortOrder
+    data?: SortOrder
     expiresAt?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -9965,13 +9846,6 @@ export namespace Prisma {
     size?: SortOrder
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
   export type FileCreateNestedManyWithoutUserInput = {
     create?: XOR<FileCreateWithoutUserInput, FileUncheckedCreateWithoutUserInput> | FileCreateWithoutUserInput[] | FileUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FileCreateOrConnectWithoutUserInput | FileCreateOrConnectWithoutUserInput[]
@@ -9984,13 +9858,6 @@ export namespace Prisma {
     connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
     createMany?: FolderCreateManyUserInputEnvelope
     connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-  }
-
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type FileUncheckedCreateNestedManyWithoutUserInput = {
@@ -10023,20 +9890,6 @@ export namespace Prisma {
     set?: $Enums.Role
   }
 
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type FileUpdateManyWithoutUserNestedInput = {
     create?: XOR<FileCreateWithoutUserInput, FileUncheckedCreateWithoutUserInput> | FileCreateWithoutUserInput[] | FileUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FileCreateOrConnectWithoutUserInput | FileCreateOrConnectWithoutUserInput[]
@@ -10063,20 +9916,6 @@ export namespace Prisma {
     update?: FolderUpdateWithWhereUniqueWithoutUserInput | FolderUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: FolderUpdateManyWithWhereWithoutUserInput | FolderUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: FolderScalarWhereInput | FolderScalarWhereInput[]
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type FileUncheckedUpdateManyWithoutUserNestedInput = {
@@ -10389,20 +10228,6 @@ export namespace Prisma {
     deleteMany?: ShareScalarWhereInput | ShareScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutSessionsInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    upsert?: UserUpsertWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
-  }
-
   export type FileCreateNestedOneWithoutSharesInput = {
     create?: XOR<FileCreateWithoutSharesInput, FileUncheckedCreateWithoutSharesInput>
     connectOrCreate?: FileCreateOrConnectWithoutSharesInput
@@ -10644,30 +10469,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type SessionCreateWithoutUserInput = {
-    id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type FileCreateWithoutUserInput = {
     id?: string
     name: string
@@ -10742,33 +10543,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    token?: StringFilter<"Session"> | string
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-  }
-
   export type FileUpsertWithWhereUniqueWithoutUserInput = {
     where: FileWhereUniqueInput
     update: XOR<FileUpdateWithoutUserInput, FileUncheckedUpdateWithoutUserInput>
@@ -10838,10 +10612,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionCreateNestedManyWithoutUserInput
     Folder?: FolderCreateNestedManyWithoutUserInput
   }
 
@@ -10852,10 +10626,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Folder?: FolderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -10965,10 +10739,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     Folder?: FolderUpdateManyWithoutUserNestedInput
   }
 
@@ -10979,10 +10753,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Folder?: FolderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -11085,10 +10859,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionCreateNestedManyWithoutUserInput
     File?: FileCreateNestedManyWithoutUserInput
   }
 
@@ -11099,10 +10873,10 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     password: string
+    salt: string
     createdAt?: Date | string
     updatedAt?: Date | string
     role?: $Enums.Role
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     File?: FileUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -11260,10 +11034,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     File?: FileUpdateManyWithoutUserNestedInput
   }
 
@@ -11274,10 +11048,10 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     File?: FileUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -11362,78 +11136,6 @@ export namespace Prisma {
   export type ShareUpdateManyWithWhereWithoutFolderInput = {
     where: ShareScalarWhereInput
     data: XOR<ShareUpdateManyMutationInput, ShareUncheckedUpdateManyWithoutFolderInput>
-  }
-
-  export type UserCreateWithoutSessionsInput = {
-    id?: string
-    email: string
-    username: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    role?: $Enums.Role
-    File?: FileCreateNestedManyWithoutUserInput
-    Folder?: FolderCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSessionsInput = {
-    id?: string
-    email: string
-    username: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    role?: $Enums.Role
-    File?: FileUncheckedCreateNestedManyWithoutUserInput
-    Folder?: FolderUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSessionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-  }
-
-  export type UserUpsertWithoutSessionsInput = {
-    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSessionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-  }
-
-  export type UserUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    File?: FileUpdateManyWithoutUserNestedInput
-    Folder?: FolderUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    File?: FileUncheckedUpdateManyWithoutUserNestedInput
-    Folder?: FolderUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FileCreateWithoutSharesInput = {
@@ -11652,13 +11354,6 @@ export namespace Prisma {
     shares?: ShareUncheckedUpdateManyWithoutFileNestedInput
   }
 
-  export type SessionCreateManyUserInput = {
-    id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
   export type FileCreateManyUserInput = {
     id?: string
     name: string
@@ -11679,27 +11374,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     parentId?: string | null
-  }
-
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FileUpdateWithoutUserInput = {

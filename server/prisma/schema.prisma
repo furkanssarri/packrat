@@ -21,14 +21,14 @@ model User {
   firstName String?
   lastName  String?
   password  String //Hashed pw
+  salt      String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   role      Role     @default(USER)
 
   // Relations
-  sessions Session[]
-  File     File[]
-  Folder   Folder[]
+  File   File[]
+  Folder Folder[]
 }
 
 model File {
@@ -75,11 +75,9 @@ model Folder {
 
 model Session {
   id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
+  sid       String   @unique
+  data      String   @db.Text
   expiresAt DateTime
-  createdAt DateTime @default(now())
 }
 
 model Share {

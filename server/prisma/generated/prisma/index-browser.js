@@ -127,6 +127,7 @@ exports.Prisma.UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   password: 'password',
+  salt: 'salt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   role: 'role'
@@ -158,10 +159,9 @@ exports.Prisma.FolderScalarFieldEnum = {
 
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  token: 'token',
-  expiresAt: 'expiresAt',
-  createdAt: 'createdAt'
+  sid: 'sid',
+  data: 'data',
+  expiresAt: 'expiresAt'
 };
 
 exports.Prisma.ShareScalarFieldEnum = {
