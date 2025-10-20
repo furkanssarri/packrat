@@ -1,0 +1,77 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-semibold mb-0">
+      <i class="bi bi-folder"></i> My Files
+    </h2>
+    <form
+      action="/upload"
+      method="POST"
+      enctype="multipart/form-data"
+      class="d-flex align-items-center gap-2"
+    >
+      <input
+        type="file"
+        name="file"
+        id="file"
+        class="form-control"
+        required
+        style="max-width: 250px;"
+      />
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-cloud-upload"></i> Upload
+      </button>
+    </form>
+  </div>
+
+  <% if (files && files.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Uploaded</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% files.forEach(file => { %>
+            <tr>
+              <td>
+                <i class="bi bi-file-earmark"></i>
+                <%= file.name %>
+              </td>
+              <td><%= file.type %></td>
+              <td><%= new Date(file.createdAt).toLocaleDateString() %></td>
+              <td class="text-end">
+                <a
+                  href="/files/<%= file.id %>/download"
+                  class="btn btn-sm btn-outline-secondary"
+                >
+                  <i class="bi bi-download"></i> Download
+                </a>
+                <form
+                  action="/files/<%= file.id %>?_method=DELETE"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    type="submit"
+                  >
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="text-center text-muted py-5">
+      <i class="bi bi-inbox display-5 d-block mb-3"></i>
+      <p>No files uploaded yet.</p>
+    </div>
+  <% } %>
+</div>

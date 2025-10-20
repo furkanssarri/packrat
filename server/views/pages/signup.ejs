@@ -1,0 +1,110 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h4 class="text-center text-primary fw-bold mb-4">Create your account</h4>
+          <form action="/auth/signup" method="POST" class="needs-validation" novalidate>
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text"
+                class="form-control <%= errors?.find(e => e.param === 'username') ? 'is-invalid' : '' %>" id="username"
+                name="username" value="<%= formData?.username || '' %>" minlength="3" maxlength="30"
+                pattern="^[a-zA-Z0-9_]+$" placeholder="Enter username" required />
+              <% errors?.filter(e=> e.param === 'username').forEach(e => { %>
+              <div class="invalid-feedback">
+                <%= e.msg %>
+              </div>
+              <% }) %>
+              <div class="invalid-feedback">
+                Username must be 3–30 characters and contain only letters, numbers, and underscores.
+              </div>
+            </div>
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password"
+                class="form-control <%= errors?.find(e => e.param === 'password') ? 'is-invalid' : '' %>" id="password"
+                name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                placeholder="Enter your password" required />
+              <% errors?.filter(e=> e.param === 'password').forEach(e => { %>
+                <div class="invalid-feedback">
+                  <%= e.msg %>
+                </div>
+                <% }) %>
+                  <div class="invalid-feedback">
+                    Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase
+                    letter, one number, and one special character.
+                  </div>
+              </div>
+              <!-- Confirm Password -->
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password"
+                  class="form-control <%= errors?.find(e => e.param === 'confirmPassword') ? 'is-invalid' : '' %>"
+                  id="confirmPassword" name="confirmPassword"
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                  placeholder="Re-enter your password" required />
+                <% errors?.filter(e=> e.param === 'confirmPassword').forEach(e => { %>
+                  <div class="invalid-feedback">
+                    <%= e.msg %>
+                  </div>
+                <% }) %>
+                  <div class="invalid-feedback">
+                    Passwords do not match.
+                  </div>
+              </div>
+              <!-- Secret Passcode -->
+              <div class="mb-3">
+                <label for="accessCode" class="form-label d-flex align-items-center">
+                  Access (optional)
+                  <button type="button"
+                    class="btn btn-sm btn-link text-secondary p-0 ms-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="If you have a member or admin access passcode, enter it here to unlock member privileges. Otherwise, leave this field empty to continue as a guest.">
+                    <i class="bi bi-info-circle-fill"></i>
+                  </button>
+                </label>
+                <input
+                  type="password"
+                  class="form-control <%= errors?.find(e => e.param === 'accessCode') ? 'is-invalid' : '' %>"
+                  id="accessCode"
+                  name="accessCode"
+                  placeholder="Enter secret passcode"
+                  value="<%= formData?.accessCode || '' %>"
+                />
+                <div class="invalid-feedback">
+                  <%= errors?.find(e => e.param === 'accessCode')?.msg || 'Passcode is too long.' %>
+                </div>
+              </div>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    "use strict";
+    const forms = document.querySelectorAll(".needs-validation");
+    Array.from(forms).forEach(form => {
+      form.addEventListener("submit", event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add("was-validated");
+      }, false);
+    });
+  })();
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  });
+</script>
