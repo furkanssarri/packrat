@@ -63,12 +63,12 @@
               </li>
             <% } else { %>
               <li class="nav-item">
-                <a class="nav-link" href="/login">
+                <a class="nav-link" href="/auth/login">
                   <i class="bi bi-box-arrow-in-right"></i> Login
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/signup">
+                <a class="nav-link" href="/auth/signup">
                   <i class="bi bi-person-plus"></i> Sign Up
                 </a>
               </li>
@@ -84,7 +84,7 @@
     </main>
 
    
-!-- Footer -->
+<!-- Footer -->
   <footer class="border-top py-3 mt-auto bg-body-tertiary">
     <div class="container text-center text-secondary small">
       &copy; <%= new Date().getFullYear() %> Pigeon | 
@@ -95,7 +95,7 @@
         class="m-1 text-decoration-none text-body d-inline-flex align-items-center footer-github-link"
         aria-label="Open GitHub profile of furkanssarri in a new tab"
       >
-        <i class="fa-brands fa-github"></i>
+        <i class="fa-brands fa-github px-1"></i>
         furkanssarri
       </a>
     </div>
@@ -119,7 +119,7 @@
     const savedTheme = localStorage.getItem("theme");
     const currentTheme = savedTheme || (prefersDark.matches ? "dark" : "light");
     root.setAttribute("data-bs-theme", currentTheme);
-    themeIcon.className =
+    themeIcon.class =
       currentTheme === "dark" ? "bi bi-sun-fill fs-5" : "bi bi-moon-fill fs-5";
 
     // Toggle theme with animation
@@ -128,7 +128,7 @@
       const newTheme =
         root.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
       root.setAttribute("data-bs-theme", newTheme);
-      themeIcon.className =
+      themeIcon.class =
         newTheme === "dark" ? "bi bi-sun-fill fs-5" : "bi bi-moon-fill fs-5";
       localStorage.setItem("theme", newTheme);
       setTimeout(() => themeIcon.classList.remove("rotate"), 300);
@@ -139,7 +139,7 @@
       if (!localStorage.getItem("theme")) {
         const newTheme = e.matches ? "dark" : "light";
         root.setAttribute("data-bs-theme", newTheme);
-        themeIcon.className =
+        themeIcon.class =
           newTheme === "dark" ? "bi bi-sun-fill fs-5" : "bi bi-moon-fill fs-5";
       }
     });

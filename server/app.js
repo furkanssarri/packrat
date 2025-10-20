@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 app.use(methodOverride("_method"));
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "server/views"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "layout");

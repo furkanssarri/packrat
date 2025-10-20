@@ -15,7 +15,7 @@
               required />
           </div>
           <button type="submit" class="btn btn-primary w-100 fw-semibold mb-3">Log In</button>
-          <% if (errorMessage.length > 0) { %>
+          <% if (errorMessage && errorMessage.length > 0) { %>
             <div class="alert alert-danger">
               <%= errorMessage[0] %>
             </div>
