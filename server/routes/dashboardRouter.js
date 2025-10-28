@@ -6,7 +6,7 @@ const dashboardRouter = Router();
 dashboardRouter.get("/", async (req, res) => {
   try {
     res.render("pages/dashboard", {
-      title: "My Files | Pigeon",
+      title: "My Files | Packrat",
       user: req.user,
       files: {},
     });

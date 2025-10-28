@@ -5,7 +5,7 @@ const indexRouter = Router();
 indexRouter.get("/", (req, res) => {
   try {
     res.render("pages/index", {
-      title: "Home | Pigeon",
+      title: "Home | Packrat",
     });
   } catch (err) {
     console.error("Error getting index page,", err);

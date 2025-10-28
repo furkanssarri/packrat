@@ -8,7 +8,7 @@ export const signupPost = async (req, res) => {
   if (!errors.isEmpty()) {
     console.log("The following errors happened: ", errors);
     return res.status(400).render("pages/signup", {
-      title: "Sign Up | Pigeon",
+      title: "Sign Up | Packrat",
       errors: errors.array(),
       formData: req.body,
     });
@@ -24,7 +24,7 @@ export const signupPost = async (req, res) => {
     });
     if (existingUser) {
       return res.status(400).render("pages/signup", {
-        title: "Sign Up | Pigeon",
+        title: "Sign Up | Packrat",
         errors: [{ msg: "Email or username already exists." }],
         formData: req.body,
       });

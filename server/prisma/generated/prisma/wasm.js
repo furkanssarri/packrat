@@ -193,7 +193,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/furkansari/repos/projects/pigeon/server/prisma/generated/prisma",
+      "value": "/Users/furkansari/repos/projects/packrat/server/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -207,7 +207,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/furkansari/repos/projects/pigeon/server/prisma/schema.prisma",
+    "sourceFilePath": "/Users/furkansari/repos/projects/packrat/server/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

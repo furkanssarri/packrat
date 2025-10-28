@@ -10,7 +10,7 @@ authRouter.post("/signup", validateSignup, signupPost);
 authRouter.get("/signup", (_req, res) => {
   try {
     res.render("pages/signup", {
-      title: "Sign Up || Pigeon",
+      title: "Sign Up || Packrat",
       errors: [],
       FormData: {},
     });
@@ -31,7 +31,7 @@ authRouter.post(
 authRouter.get("/login", (req, res) => {
   try {
     res.render("pages/login", {
-      title: "Login | Pigeon",
+      title: "Login | Packrat",
       errorMessage: [],
       formData: {},
     });
