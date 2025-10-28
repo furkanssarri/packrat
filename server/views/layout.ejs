@@ -55,11 +55,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <form action="/logout?_method=DELETE" method="POST" class="d-inline">
-                  <button class="btn btn-link nav-link" type="submit">
+                  <a href="/auth/logout" class="btn btn-link nav-link" type="submit">
                     <i class="bi bi-box-arrow-right"></i> Logout
-                  </button>
-                </form>
+                  </a>
               </li>
             <% } else { %>
               <li class="nav-item">
