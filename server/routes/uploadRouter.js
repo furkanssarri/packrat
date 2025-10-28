@@ -1,20 +1,46 @@
 import { Router } from "express";
 import multer from "multer";
+import fs from "node:fs";
 import path from "node:path";
 
 const uploadRouter = Router();
 const __dirname = path.resolve();
-const upload = multer({ dest: path.join(__dirname, "server/uploads/") });
 
-uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
-  try {
-    console.log(req.file);
-    const { filename, path } = await req.file;
-    res.send("the image is: ", req.file.filename, "path: ", req.file.path);
-  } catch (err) {
-    console.error("Error writing the uploaded file,", err);
-    res.status(500).send("Internal Server Error");
-  }
+const uploadDir = path.join(__dirname, "server/uploads");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, rile, cb) => {
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName);
+  },
 });
 
+const upload = multer({ storage });
+
+uploadRouter.post("/", upload.single("file"), (req, res, next) => {
+  fs.readdir(uploadDir, (err) => {
+    if (err) {
+      console.error("Error reading upload directory:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    res.render("pages/dashboard", {
+      title: "Dashboard || Packrat",
+      files,
+    });
+  });
+});
+
+uploadRouter.get("/", (req, res) => {
+  fs.readdir(uploadDir, (err, files) => {
+    if (err) {
+      console.error("Error reading uploads folder:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    res.render("pages/dashboard", {
+      title: "Dashboard || Packrat",
+      files: files,
+    });
+  });
+});
 export default uploadRouter;

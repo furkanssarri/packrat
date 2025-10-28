@@ -23,55 +23,64 @@
     </form>
   </div>
 
-  <% if (files && files.length > 0) { %>
-    <div class="table-responsive">
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Type</th>
-            <th scope="col">Uploaded</th>
-            <th scope="col" class="text-end">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% files.forEach(file => { %>
-            <tr>
-              <td>
-                <i class="bi bi-file-earmark"></i>
-                <%= file.name %>
-              </td>
-              <td><%= file.type %></td>
-              <td><%= new Date(file.createdAt).toLocaleDateString() %></td>
-              <td class="text-end">
-                <a
-                  href="/files/<%= file.id %>/download"
-                  class="btn btn-sm btn-outline-secondary"
-                >
-                  <i class="bi bi-download"></i> Download
-                </a>
-                <form
-                  action="/files/<%= file.id %>?_method=DELETE"
-                  method="POST"
-                  class="d-inline"
-                >
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    type="submit"
-                  >
-                    <i class="bi bi-trash"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+<% if (files && files.length > 0) { %>
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+      <% files.forEach(file => { %>
+        <div class="col">
+          <div class="card file-card" data-filename="<%= file %>">
+            <% if (file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.jpeg')) { %>
+              <img src="/uploads/<%= file %>" class="card-img-top" alt="<%= file %>">
+            <% } else if (file.endsWith('.pdf')) { %>
+              <div class="p-5 text-center"><i class="bi bi-file-earmark-pdf fs-1 text-danger"></i></div>
+            <% } else { %>
+              <div class="p-5 text-center"><i class="bi bi-file-earmark fs-1 text-secondary"></i></div>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
     </div>
   <% } else { %>
-    <div class="text-center text-muted py-5">
-      <i class="bi bi-inbox display-5 d-block mb-3"></i>
-      <p>No files uploaded yet.</p>
-    </div>
+    <p class="text-muted">No files uploaded yet.</p>
   <% } %>
 </div>
+<!-- Overlay -->
+<div id="filePreviewModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">File Preview</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="previewImage" class="img-fluid d-none" />
+        <iframe id="previewFrame" class="w-100" style="height:80vh;" hidden></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.file-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const filename = card.dataset.filename;
+      const url = `/uploads/${filename}`;
+      const imgEl = document.getElementById('previewImage');
+      const frameEl = document.getElementById('previewFrame');
+
+      // reset
+      imgEl.classList.add('d-none');
+      frameEl.hidden = true;
+
+      if (/\.(jpg|jpeg|png|gif)$/i.test(filename)) {
+        imgEl.src = url;
+        imgEl.classList.remove('d-none');
+      } else {
+        frameEl.src = url;
+        frameEl.hidden = false;
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('filePreviewModal'));
+      modal.show();
+    });
+  });
+</script>

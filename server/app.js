@@ -59,6 +59,8 @@ app.use((_req, res, next) => {
   next();
 });
 
+app.use("/uploads", express.static(path.join(__dirname, "server/uploads")));
+
 app.use("/auth", authRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/upload", uploadRouter);
