@@ -8,3 +8,145 @@
 .card-title {
   font-weight: 500;
 }
+.file-card {
+  width: 100%;
+  height: 280px; /* 👈 set consistent card height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.file-preview-wrapper {
+  height: 160px; /* 👈 fixed preview area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.file-thumb {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* 👈 keeps images centered and cropped nicely */
+}
+
+.file-icon {
+  font-size: 3rem;
+  color: #6c757d;
+}
+
+.card-body {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Default: Grid view */
+#fileContainer.grid-view .file-item {
+  display: block;
+}
+
+/* List view overrides */
+#fileContainer.list-view .row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#fileContainer.list-view .file-item {
+  width: 100%;
+}
+
+#fileContainer.list-view .file-card {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: auto;
+  aspect-ratio: unset;
+}
+
+#fileContainer.list-view .file-preview-wrapper {
+  flex: 0 0 120px;
+  height: 120px;
+  margin-right: 1rem;
+}
+
+#fileContainer.list-view .card-body {
+  text-align: left;
+  flex: 1;
+}
+
+#fileContainer.list-view .file-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 🧩 Compact List View */
+#fileContainer.list-view .file-card {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: auto;
+  aspect-ratio: unset;
+  padding: 0.5rem; /* smaller internal padding */
+}
+
+#fileContainer.list-view .file-preview-wrapper {
+  flex: 0 0 32px; /* smaller thumbnail */
+  height: 32px;
+  margin-right: 0.75rem;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#fileContainer.list-view .file-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#fileContainer.list-view .card-body {
+  padding: 0.25rem 0;
+  text-align: left;
+  flex: 1;
+}
+.card-body .card-title {
+  min-width: 0;
+}
+
+#fileContainer.list-view .card-title {
+  font-size: 0.9rem; /* slightly smaller text */
+  margin-bottom: 0.2rem;
+}
+
+.card-body.flex-column .card-title {
+  white-space: normal; /* allow wrapping on small screens */
+}
+
+.card-body.flex-md-row .card-title {
+  white-space: nowrap; /* truncate on larger screens */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#fileContainer.list-view .card-text {
+  font-size: 0.8rem;
+  margin-bottom: 0.1rem;
+}
+
+#fileContainer.list-view .file-icon {
+  font-size: 2rem; /* smaller icons */
+}
+
+#fileContainer.list-view .file-overlay {
+  border-radius: 0; /* align neatly with list shape */
+}
+
+@media (min-width: 768px) {
+  .file-card {
+    height: 320px;
+  }
+  .file-preview-wrapper {
+    height: 180px;
+  }
+}

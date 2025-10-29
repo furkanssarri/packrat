@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
     <h2 class="fw-semibold mb-0">
       <i class="bi bi-folder"></i> My Files
     </h2>
@@ -7,7 +7,7 @@
       action="/upload"
       method="POST"
       enctype="multipart/form-data"
-      class="d-flex align-items-center gap-2"
+      class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2"
     >
       <input
         type="file"
@@ -26,87 +26,72 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
   <h4 class="fw-semibold mb-0">My Files</h4>
 
-  <div class="dropdown">
-    <%
-      const sortLabels = {
-        'newest': 'Newest first',
-        'oldest': 'Oldest first',
-        'size-desc': 'Largest first',
-        'size-asc': 'Smallest first',
-        'type': 'File type',
-        'name': 'Name (A–Z)',
-      };
-      const currentLabel = sortLabels[sort] || 'Sort by';
-    %>
+<div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
+  <div class="d-flex align-items-center gap-3">
+    <h4 class="fw-semibold mb-0"><i class="bi bi-folder"></i> My Files</h4>
+  </div>
 
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
-      <%= currentLabel %>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-      <li>
-        <a class="dropdown-item <%= sort === 'newest' ? 'active' : '' %>" href="?sort=newest">Newest first</a>
-      </li>
-      <li>
-        <a class="dropdown-item <%= sort === 'oldest' ? 'active' : '' %>" href="?sort=oldest">Oldest first</a>
-      </li>
-      <li>
-        <a class="dropdown-item <%= sort === 'size-desc' ? 'active' : '' %>" href="?sort=size-desc">Largest first</a>
-      </li>
-      <li>
-        <a class="dropdown-item <%= sort === 'size-asc' ? 'active' : '' %>" href="?sort=size-asc">Smallest first</a>
-      </li>
-      <li>
-        <a class="dropdown-item <%= sort === 'type' ? 'active' : '' %>" href="?sort=type">File type</a>
-      </li>
-      <li>
-        <a class="dropdown-item <%= sort === 'name' ? 'active' : '' %>" href="?sort=name">Name (A–Z)</a>
-      </li>
-    </ul>
+  <div class="d-flex align-items-center gap-2">
+    <!-- Sort Dropdown -->
+    <div class="dropdown me-2">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+        <% const sortLabels = { 'newest': 'Newest first', 'oldest': 'Oldest first', 'size-desc': 'Largest first', 'size-asc': 'Smallest first', 'type': 'File type', 'name': 'Name (A–Z)' }; %>
+        <%= sortLabels[sort] || 'Sort by' %>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+        <% Object.keys(sortLabels).forEach(key => { %>
+          <li><a class="dropdown-item <%= sort === key ? 'active' : '' %>" href="?sort=<%= key %>"><%= sortLabels[key] %></a></li>
+        <% }) %>
+      </ul>
+    </div>
+
+    <!-- View Toggle Buttons -->
+    <div class="btn-group" role="group" aria-label="View Toggle">
+      <button id="gridViewBtn" class="btn btn-outline-primary active" title="Grid view">
+        <i class="bi bi-grid"></i>
+      </button>
+      <button id="listViewBtn" class="btn btn-outline-primary" title="List view">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
   </div>
 </div>
+</div>
 
-<% if (files && files.length > 0) { %>
-    <div class="row row-cols-2 row-cols-md-4 g-3">
-      <% files.forEach(file => { %>
-        <div class="col">
-          <div class="card file-card" data-filename="<%= file.storageName %>">
-          <% const filePath = file.path || `/uploads/${file.storageName}`; %>
-          <% if (file.type?.startsWith('image/')) { %>
-            <img src="<%= filePath %>" class="card-img-top" alt="<%= file.name %>">
-          <% } else if (file.type === 'application/pdf') { %>
-            <div class="p-5 text-center"><i class="bi bi-file-earmark-pdf fs-1 text-danger"></i></div>
-          <% } else { %>
-            <div class="p-5 text-center"><i class="bi bi-file-earmark fs-1 text-secondary"></i></div>
-          <% } %>
-            <div class="card-body text-center">
-              <h6 class="card-title text-truncate mb-1" title="<%= file.name %>">
-                <i class="bi bi-file-earmark"></i> <%= file.name %>
-              </h6>
 
-              <p class="card-text text-muted small mb-2">
-                <%= (file.size / 1024).toFixed(1) %> KB  
-                (<%= file.type.split('/')[1].toUpperCase() %>)
-              </p>
-
-              <p class="card-text text-muted small">
-                Uploaded on <%= new Date(file.createdAt).toLocaleString() %>
-              </p>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-eye"></i> View
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="bi bi-trash"></i> Delete
-              </button>
-            </div>
+<div id="fileContainer" class="grid-view">
+  <% if (files && files.length > 0) { %>
+  <div class="row g-3">
+    <% files.forEach(file => { %>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 file-item m-0">
+        <div class="card file-card h-100 text-center position-relative" data-filename="<%= file.storageName %>">
+          <!-- Thumbnail wrapper -->
+          <div class="file-preview-wrapper position-relative">
+            <% const filePath = file.path || `/uploads/${file.storageName}`; %>
+            <% if (file.type?.startsWith('image/')) { %>
+              <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
+            <% } else if (file.type === 'application/pdf') { %>
+              <div class="file-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+            <% } else { %>
+              <div class="file-icon"><i class="bi bi-file-earmark"></i></div>
+            <% } %>
+          </div>
+          <!-- Metadata -->
+<div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center gap-0 gap-md-2">
+<h6 class="card-title text-truncate mb-1 flex-grow-1" title="<%= file.name %>">
+  <%= file.name %>
+</h6>
+            <span class="card-text text-muted small mb-0"> <%= (file.size / 1024).toFixed(1) %> KB </span>
+            <span class="card-text text-muted small"> Uploaded on <%= new Date(file.createdAt).toLocaleString() %></span>
           </div>
         </div>
-      <% }) %>
-    </div>
-  <% } else { %>
-    <p class="text-muted">No files uploaded yet.</p>
-  <% } %>
+      </div>
+    <% }) %>
+  </div>
+    <% } else { %>
+      <p class="text-muted">No files uploaded yet.</p>
+    <% } %>
+  </div>
 </div>
 <!-- Overlay -->
 <div id="filePreviewModal" class="modal fade" tabindex="-1">
@@ -164,4 +149,33 @@
       uploadForm.appendChild(hidden);
     }
   }
+</script>
+<script>
+const gridBtn = document.getElementById("gridViewBtn");
+const listBtn = document.getElementById("listViewBtn");
+const fileContainer = document.getElementById("fileContainer");
+
+// Restore previous view preference (from localStorage)
+const savedView = localStorage.getItem("viewMode");
+if (savedView === "list") setListView();
+else setGridView();
+
+gridBtn.addEventListener("click", setGridView);
+listBtn.addEventListener("click", setListView);
+
+function setGridView() {
+  fileContainer.classList.add("grid-view");
+  fileContainer.classList.remove("list-view");
+  gridBtn.classList.add("active");
+  listBtn.classList.remove("active");
+  localStorage.setItem("viewMode", "grid");
+}
+
+function setListView() {
+  fileContainer.classList.add("list-view");
+  fileContainer.classList.remove("grid-view");
+  listBtn.classList.add("active");
+  gridBtn.classList.remove("active");
+  localStorage.setItem("viewMode", "list");
+}
 </script>
