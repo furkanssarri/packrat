@@ -13,12 +13,21 @@ export const getAllFolders = async (req, res) => {
 };
 export const getFolderContents = async (req, res) => {
   const { id } = req.params;
+
   const folder = await prisma.folder.findUnique({
     where: { id },
     include: { children: true, files: true },
   });
+
+  if (!folder) {
+    return res.status(404).render("pages/404", {
+      title: "Folder not found || Packrat",
+      message: "The folder you’re looking for doesn’t exist.",
+    });
+  }
+
   res.render("pages/folders/show", {
-    title: `Folder ${folder.name} || Packrat`,
+    title: `${folder.name} || Packrat`,
     folder,
   });
 };

@@ -1,0 +1,41 @@
+<nav class="mb-3">
+  <a href="/folders">← Back to My Drive</a>
+</nav>
+
+<h2>
+  <%= folder.name %>
+</h2>
+
+<% if (folder.children.length===0 && folder.files.length===0) { %>
+  <p class="text-muted">This folder is empty.</p>
+  <% } %>
+
+    <% if (folder.children.length> 0) { %>
+      <h5 class="mt-4">Subfolders</h5>
+      <ul class="list-group mb-4">
+        <% folder.children.forEach(child=> { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="/folders/<%= child.id %>">
+              <%= child.name %>
+            </a>
+            <form action="/folders/<%= child.id %>/delete" method="POST" class="mb-0">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </li>
+          <% }) %>
+      </ul>
+      <% } %>
+
+        <% if (folder.files.length> 0) { %>
+          <h5>Files</h5>
+          <ul class="list-group mb-4">
+            <% folder.files.forEach(file=> { %>
+              <li class="list-group-item">
+                <%= file.name %>
+              </li>
+              <% }) %>
+          </ul>
+          <% } %>
+
+            <h4>Add Subfolder</h4>
+            <%- include('./_form', { parentId: folder.id }) %>

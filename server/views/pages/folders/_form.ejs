@@ -1,0 +1,8 @@
+<form action="/folders" method="POST" class="d-flex gap-2">
+  <% if (parentId) { %>
+    <input type="hidden" name="parentId" value="<%= parentId %>" />
+    <% } %>
+      <input type="text" name="name" class="form-control"
+        placeholder="<%= parentId ? 'Subfolder name' : 'Folder name' %>" required />
+      <button type="submit" class="btn btn-primary">Create</button>
+</form>
