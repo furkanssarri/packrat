@@ -21,6 +21,7 @@ const upload = multer({ storage });
 uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
   try {
     const { originalname, filename, size, mimetype } = req.file;
+    const { sort } = req.body;
     await prisma.file.create({
       data: {
         name: originalname,
@@ -32,42 +33,15 @@ uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
       },
     });
 
-    const files = await prisma.file.findMany({
-      where: { userId: req.user.id },
-      orderBy: { createdAt: "desc" },
-    });
-
-    const verifiedFiles = [];
-    for (const file of files) {
-      const fullPath = path.join(uploadDir, file.storageName);
-      try {
-        await fs.access(fullPath);
-        verifiedFiles.push(file);
-      } catch {
-        console.warn(`Missing file on disk: ${file.storageName}`);
-      }
+    if (sort) {
+      res.redirect(`/dashboard?sort=${encodeURIComponent(sort)}`);
+    } else {
+      res.redirect("/dashboard");
     }
-
-    res.render("pages/dashboard", {
-      title: "Dashboard || Packrat",
-      files: verifiedFiles,
-    });
   } catch (err) {
     console.error("Error saving or retrieving files:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-uploadRouter.get("/", (req, res) => {
-  fs.readdir(uploadDir, (err, files) => {
-    if (err) {
-      console.error("Error reading uploads folder:", err);
-      return res.status(500).send("Internal Server Error");
-    }
-    res.render("pages/dashboard", {
-      title: "Dashboard || Packrat",
-      files: files,
-    });
-  });
-});
 export default uploadRouter;

@@ -23,6 +23,48 @@
     </form>
   </div>
 
+  <div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-semibold mb-0">My Files</h4>
+
+  <div class="dropdown">
+    <%
+      const sortLabels = {
+        'newest': 'Newest first',
+        'oldest': 'Oldest first',
+        'size-desc': 'Largest first',
+        'size-asc': 'Smallest first',
+        'type': 'File type',
+        'name': 'Name (A–Z)',
+      };
+      const currentLabel = sortLabels[sort] || 'Sort by';
+    %>
+
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+      <%= currentLabel %>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+      <li>
+        <a class="dropdown-item <%= sort === 'newest' ? 'active' : '' %>" href="?sort=newest">Newest first</a>
+      </li>
+      <li>
+        <a class="dropdown-item <%= sort === 'oldest' ? 'active' : '' %>" href="?sort=oldest">Oldest first</a>
+      </li>
+      <li>
+        <a class="dropdown-item <%= sort === 'size-desc' ? 'active' : '' %>" href="?sort=size-desc">Largest first</a>
+      </li>
+      <li>
+        <a class="dropdown-item <%= sort === 'size-asc' ? 'active' : '' %>" href="?sort=size-asc">Smallest first</a>
+      </li>
+      <li>
+        <a class="dropdown-item <%= sort === 'type' ? 'active' : '' %>" href="?sort=type">File type</a>
+      </li>
+      <li>
+        <a class="dropdown-item <%= sort === 'name' ? 'active' : '' %>" href="?sort=name">Name (A–Z)</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
 <% if (files && files.length > 0) { %>
     <div class="row row-cols-2 row-cols-md-4 g-3">
       <% files.forEach(file => { %>
@@ -36,6 +78,28 @@
           <% } else { %>
             <div class="p-5 text-center"><i class="bi bi-file-earmark fs-1 text-secondary"></i></div>
           <% } %>
+            <div class="card-body text-center">
+              <h6 class="card-title text-truncate mb-1" title="<%= file.name %>">
+                <i class="bi bi-file-earmark"></i> <%= file.name %>
+              </h6>
+
+              <p class="card-text text-muted small mb-2">
+                <%= (file.size / 1024).toFixed(1) %> KB  
+                (<%= file.type.split('/')[1].toUpperCase() %>)
+              </p>
+
+              <p class="card-text text-muted small">
+                Uploaded on <%= new Date(file.createdAt).toLocaleString() %>
+              </p>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-eye"></i> View
+              </button>
+              <button class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </div>
           </div>
         </div>
       <% }) %>
@@ -84,4 +148,20 @@
       modal.show();
     });
   });
+</script>
+<script>
+  // Preserve the current sort parameter across uploads
+  const uploadForm = document.querySelector('form[action="/upload"]');
+  if (uploadForm) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('sort');
+    if (currentSort) {
+      // Append it as a hidden field so it persists after redirect
+      const hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = 'sort';
+      hidden.value = currentSort;
+      uploadForm.appendChild(hidden);
+    }
+  }
 </script>
