@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import methodOverride from "method-override";
+import fs from "node:fs/promises";
 import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import passport from "passport";
@@ -18,6 +19,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
+const uploadDir = path.join(process.cwd(), "server/uploads");
 
 app.use(methodOverride("_method"));
 app.set("views", path.join(__dirname, "server/views"));
@@ -59,6 +61,18 @@ app.use((_req, res, next) => {
   next();
 });
 
+async function syncDatabaseFiles() {
+  const dbFiles = await prisma.file.findMany();
+  const diskFiles = await fs.readdir(uploadDir);
+
+  for (const dbFile of dbFiles) {
+    if (!diskFiles.includes(dbFile.storageName)) {
+      console.warn(`Removing missing file from DB: ${dbFile.storageName}`);
+      await prisma.file.delete({ where: { id: dbFile.id } });
+    }
+  }
+}
+syncDatabaseFiles();
 app.use("/uploads", express.static(path.join(__dirname, "server/uploads")));
 
 app.use("/auth", authRouter);

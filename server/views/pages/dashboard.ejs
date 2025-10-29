@@ -27,14 +27,15 @@
     <div class="row row-cols-2 row-cols-md-4 g-3">
       <% files.forEach(file => { %>
         <div class="col">
-          <div class="card file-card" data-filename="<%= file %>">
-            <% if (file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.jpeg')) { %>
-              <img src="/uploads/<%= file %>" class="card-img-top" alt="<%= file %>">
-            <% } else if (file.endsWith('.pdf')) { %>
-              <div class="p-5 text-center"><i class="bi bi-file-earmark-pdf fs-1 text-danger"></i></div>
-            <% } else { %>
-              <div class="p-5 text-center"><i class="bi bi-file-earmark fs-1 text-secondary"></i></div>
-            <% } %>
+          <div class="card file-card" data-filename="<%= file.storageName %>">
+          <% const filePath = file.path || `/uploads/${file.storageName}`; %>
+          <% if (file.type?.startsWith('image/')) { %>
+            <img src="<%= filePath %>" class="card-img-top" alt="<%= file.name %>">
+          <% } else if (file.type === 'application/pdf') { %>
+            <div class="p-5 text-center"><i class="bi bi-file-earmark-pdf fs-1 text-danger"></i></div>
+          <% } else { %>
+            <div class="p-5 text-center"><i class="bi bi-file-earmark fs-1 text-secondary"></i></div>
+          <% } %>
           </div>
         </div>
       <% }) %>
