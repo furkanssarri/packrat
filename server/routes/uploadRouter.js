@@ -19,21 +19,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
+  const { originalname, filename, size, mimetype } = req.file;
+  const { sort, parentId } = req.body;
+  const userId = req.user.id;
+
   try {
-    const { originalname, filename, size, mimetype } = req.file;
-    const { sort } = req.body;
     await prisma.file.create({
       data: {
         name: originalname,
         storageName: filename,
-        size,
         type: mimetype,
+        size,
         path: `/uploads/${filename}`,
-        userId: req.user.id,
+        user: { connect: { id: userId } },
+        ...(parentId
+          ? { folder: { connect: { id: parseInt(parentId) } } }
+          : {}),
       },
     });
 
     if (sort) {
+      if (parentId) {
+        res.redirect(`/folders/${parentId}`);
+      }
       res.redirect(`/dashboard?sort=${encodeURIComponent(sort)}`);
     } else {
       res.redirect("/dashboard");

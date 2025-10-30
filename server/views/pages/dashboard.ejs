@@ -1,99 +1,139 @@
 <div class="container py-4">
+  <!-- Breadcrumb Navigation -->
+  <% if (parentFolder) { %>
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard">My Drive</a></li>
+        <% let ancestor = parentFolder; %>
+        <% while (ancestor) { %>
+          <li class="breadcrumb-item">
+            <a href="/folders/<%= ancestor.id %>"><%= ancestor.name %></a>
+          </li>
+          <% ancestor = ancestor.parent; %>
+        <% } %>
+        <li class="breadcrumb-item active" aria-current="page">
+          <%= title.split(' || ')[0] %>
+        </li>
+      </ol>
+    </nav>
+  <% } else { %>
+    <h1 class="mb-4">My Drive</h1>
+  <% } %>
+
+  <!-- Upload Form -->
+  <form
+    action="/upload"
+    method="POST"
+    enctype="multipart/form-data"
+    class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 mb-4"
+  >
+    <input type="file" name="file" class="form-control" required style="max-width: 250px;">
+    <% if (parentFolder) { %>
+      <input type="hidden" name="parentId" value="<%= parentFolder.id %>">
+    <% } %>
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-cloud-upload"></i> Upload
+    </button>
+  </form>
+
+  <!-- Toolbar: Sort + View Toggle -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-    <h2 class="fw-semibold mb-0">
-      <i class="bi bi-folder"></i> My Files
-    </h2>
-    <form
-      action="/upload"
-      method="POST"
-      enctype="multipart/form-data"
-      class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2"
-    >
-      <input
-        type="file"
-        name="file"
-        id="file"
-        class="form-control"
-        required
-        style="max-width: 250px;"
-      />
-      <button type="submit" class="btn btn-primary">
-        <i class="bi bi-cloud-upload"></i> Upload
-      </button>
-    </form>
-  </div>
+    <div class="d-flex align-items-center gap-3">
+      <h4 class="fw-semibold mb-0"><i class="bi bi-folder"></i> My Files</h4>
+    </div>
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-  <h4 class="fw-semibold mb-0">My Files</h4>
-
-<div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
-  <div class="d-flex align-items-center gap-3">
-    <h4 class="fw-semibold mb-0"><i class="bi bi-folder"></i> My Files</h4>
-  </div>
-
-  <div class="d-flex align-items-center gap-2">
-    <!-- Sort Dropdown -->
-    <div class="dropdown me-2">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+    <div class="d-flex align-items-center gap-2">
+      <div class="dropdown me-2">
         <% const sortLabels = { 'newest': 'Newest first', 'oldest': 'Oldest first', 'size-desc': 'Largest first', 'size-asc': 'Smallest first', 'type': 'File type', 'name': 'Name (A–Z)' }; %>
-        <%= sortLabels[sort] || 'Sort by' %>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-        <% Object.keys(sortLabels).forEach(key => { %>
-          <li><a class="dropdown-item <%= sort === key ? 'active' : '' %>" href="?sort=<%= key %>"><%= sortLabels[key] %></a></li>
-        <% }) %>
-      </ul>
-    </div>
-
-    <!-- View Toggle Buttons -->
-    <div class="btn-group" role="group" aria-label="View Toggle">
-      <button id="gridViewBtn" class="btn btn-outline-primary active" title="Grid view">
-        <i class="bi bi-grid"></i>
-      </button>
-      <button id="listViewBtn" class="btn btn-outline-primary" title="List view">
-        <i class="bi bi-list"></i>
-      </button>
-    </div>
-  </div>
-</div>
-</div>
-
-
-<div id="fileContainer" class="grid-view">
-  <% if (files && files.length > 0) { %>
-  <div class="row g-3">
-    <% files.forEach(file => { %>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 file-item m-0">
-        <div class="card file-card h-100 text-center position-relative" data-filename="<%= file.storageName %>">
-          <!-- Thumbnail wrapper -->
-          <div class="file-preview-wrapper position-relative">
-            <% const filePath = file.path || `/uploads/${file.storageName}`; %>
-            <% if (file.type?.startsWith('image/')) { %>
-              <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
-            <% } else if (file.type === 'application/pdf') { %>
-              <div class="file-icon"><i class="bi bi-file-earmark-pdf"></i></div>
-            <% } else { %>
-              <div class="file-icon"><i class="bi bi-file-earmark"></i></div>
-            <% } %>
-          </div>
-          <!-- Metadata -->
-<div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center gap-0 gap-md-2">
-<h6 class="card-title text-truncate mb-1 flex-grow-1" title="<%= file.name %>">
-  <%= file.name %>
-</h6>
-            <span class="card-text text-muted small mb-0"> <%= (file.size / 1024).toFixed(1) %> KB </span>
-            <span class="card-text text-muted small"> Uploaded on <%= new Date(file.createdAt).toLocaleString() %></span>
-          </div>
-        </div>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+          <%= sortLabels[sort] || 'Sort by' %>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+          <% Object.keys(sortLabels).forEach(key => { %>
+            <li><a class="dropdown-item <%= sort === key ? 'active' : '' %>" href="?sort=<%= key %>"><%= sortLabels[key] %></a></li>
+          <% }) %>
+        </ul>
       </div>
-    <% }) %>
+
+      <!-- View Toggle Buttons -->
+      <div class="btn-group" role="group" aria-label="View Toggle">
+        <button id="gridViewBtn" class="btn btn-outline-primary active" title="Grid view">
+          <i class="bi bi-grid"></i>
+        </button>
+        <button id="listViewBtn" class="btn btn-outline-primary" title="List view">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
   </div>
-    <% } else { %>
-      <p class="text-muted">No files uploaded yet.</p>
+
+  <!-- Main Folder/File Container -->
+  <div id="fileContainer" class="grid-view">
+    <!-- Folders Section -->
+    <% if (folders && folders.length > 0) { %>
+      <div class="row g-3 mb-4">
+        <% folders.forEach(folder => { %>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 folder-card text-center position-relative">
+              <a href="/folders/<%= folder.id %>" class="text-decoration-none text-reset">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                  <div class="folder-icon display-3 mb-2 text-warning">
+                    <i class="bi bi-folder-fill"></i>
+                  </div>
+                  <h6 class="card-title text-truncate mb-1"><%= folder.name %></h6>
+                  <p class="card-text text-muted small">
+                    Created on <%= new Date(folder.createdAt).toLocaleDateString() %>
+                  </p>
+                </div>
+              </a>
+              <form action="/folders/<%= folder.id %>/delete" method="POST" class="position-absolute top-0 end-0 m-2">
+                <button class="btn btn-sm btn-outline-danger" title="Delete Folder">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <!-- Divider -->
+    <% if (folders && folders.length > 0 && files && files.length > 0) { %>
+      <hr class="my-4">
+    <% } %>
+
+    <!-- Files Section -->
+    <% if (files && files.length > 0) { %>
+      <div class="row g-3">
+        <% files.forEach(file => { %>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 file-item m-0">
+            <div class="card file-card h-100 text-center position-relative" data-filename="<%= file.storageName %>">
+              <div class="file-preview-wrapper position-relative">
+                <% const filePath = file.path || `/uploads/${file.storageName}`; %>
+                <% if (file.type?.startsWith('image/')) { %>
+                  <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
+                <% } else if (file.type === 'application/pdf') { %>
+                  <div class="file-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                <% } else { %>
+                  <div class="file-icon"><i class="bi bi-file-earmark"></i></div>
+                <% } %>
+              </div>
+              <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center gap-0 gap-md-2">
+                <h6 class="card-title text-truncate mb-1 flex-grow-1" title="<%= file.name %>"><%= file.name %></h6>
+                <span class="card-text text-muted small mb-0"><%= (file.size / 1024).toFixed(1) %> KB</span>
+                <span class="card-text text-muted small">Uploaded on <%= new Date(file.createdAt).toLocaleString() %></span>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else if ((!folders || folders.length === 0) && (!files || files.length === 0)) { %>
+      <p class="text-muted">This folder is empty.</p>
     <% } %>
   </div>
 </div>
-<!-- Overlay -->
+
+<!-- File Preview Modal -->
 <div id="filePreviewModal" class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content bg-dark text-white">
@@ -109,18 +149,17 @@
   </div>
 </div>
 
+<!-- View + Sort Scripts -->
 <script>
+  // Modal preview
   document.querySelectorAll('.file-card').forEach(card => {
     card.addEventListener('click', () => {
       const filename = card.dataset.filename;
       const url = `/uploads/${filename}`;
       const imgEl = document.getElementById('previewImage');
       const frameEl = document.getElementById('previewFrame');
-
-      // reset
       imgEl.classList.add('d-none');
       frameEl.hidden = true;
-
       if (/\.(jpg|jpeg|png|gif)$/i.test(filename)) {
         imgEl.src = url;
         imgEl.classList.remove('d-none');
@@ -128,20 +167,17 @@
         frameEl.src = url;
         frameEl.hidden = false;
       }
-
       const modal = new bootstrap.Modal(document.getElementById('filePreviewModal'));
       modal.show();
     });
   });
-</script>
-<script>
-  // Preserve the current sort parameter across uploads
+
+  // Preserve sort parameter across uploads
   const uploadForm = document.querySelector('form[action="/upload"]');
   if (uploadForm) {
     const urlParams = new URLSearchParams(window.location.search);
     const currentSort = urlParams.get('sort');
     if (currentSort) {
-      // Append it as a hidden field so it persists after redirect
       const hidden = document.createElement('input');
       hidden.type = 'hidden';
       hidden.name = 'sort';
@@ -149,33 +185,31 @@
       uploadForm.appendChild(hidden);
     }
   }
-</script>
-<script>
-const gridBtn = document.getElementById("gridViewBtn");
-const listBtn = document.getElementById("listViewBtn");
-const fileContainer = document.getElementById("fileContainer");
 
-// Restore previous view preference (from localStorage)
-const savedView = localStorage.getItem("viewMode");
-if (savedView === "list") setListView();
-else setGridView();
+  // Grid/List toggle
+  const gridBtn = document.getElementById("gridViewBtn");
+  const listBtn = document.getElementById("listViewBtn");
+  const fileContainer = document.getElementById("fileContainer");
+  const savedView = localStorage.getItem("viewMode");
+  if (savedView === "list") setListView();
+  else setGridView();
 
-gridBtn.addEventListener("click", setGridView);
-listBtn.addEventListener("click", setListView);
+  gridBtn.addEventListener("click", setGridView);
+  listBtn.addEventListener("click", setListView);
 
-function setGridView() {
-  fileContainer.classList.add("grid-view");
-  fileContainer.classList.remove("list-view");
-  gridBtn.classList.add("active");
-  listBtn.classList.remove("active");
-  localStorage.setItem("viewMode", "grid");
-}
+  function setGridView() {
+    fileContainer.classList.add("grid-view");
+    fileContainer.classList.remove("list-view");
+    gridBtn.classList.add("active");
+    listBtn.classList.remove("active");
+    localStorage.setItem("viewMode", "grid");
+  }
 
-function setListView() {
-  fileContainer.classList.add("list-view");
-  fileContainer.classList.remove("grid-view");
-  listBtn.classList.add("active");
-  gridBtn.classList.remove("active");
-  localStorage.setItem("viewMode", "list");
-}
+  function setListView() {
+    fileContainer.classList.add("list-view");
+    fileContainer.classList.remove("grid-view");
+    listBtn.classList.add("active");
+    gridBtn.classList.remove("active");
+    localStorage.setItem("viewMode", "list");
+  }
 </script>

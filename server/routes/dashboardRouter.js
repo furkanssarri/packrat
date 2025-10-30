@@ -1,41 +1,24 @@
 import { Router } from "express";
 import prisma from "../db/prisma.js";
 import fs from "node:fs/promises";
+import { getFolderData } from "../utils/folderUtils.js";
 
 const dashboardRouter = Router();
 
 dashboardRouter.get("/", async (req, res) => {
+  const { sort } = req.query;
+  const userId = req.user.id;
+
+  const { orderBy } = getFolderData(sort);
+
   try {
-    const { sort } = req.query;
-
-    let orderBy = { createdAt: "desc" }; //default sorting
-
-    switch (sort) {
-      case "oldest":
-        orderBy = { createdAt: "asc" };
-        break;
-      case "size-desc":
-        orderBy = { size: "desc" };
-        break;
-      case "size-asc":
-        orderBy = { size: "asc" };
-        break;
-      case "type":
-        orderBy = { type: "asc" };
-        break;
-      case "name":
-        orderBy = { name: "asc" };
-        break;
-    }
-    const files = await prisma.file.findMany({
-      where: { userId: req.user.id },
-      orderBy,
-    });
+    const data = await getFolderData({ userId, orderBy });
 
     res.render("pages/dashboard", {
-      title: "My Files | Packrat",
-      user: req.user,
-      files,
+      title: `${data.title} || Packrat`,
+      folders: data.folders,
+      files: data.files,
+      parentFolder: data.parentFolder,
       sort,
     });
   } catch (err) {

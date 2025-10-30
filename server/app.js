@@ -15,6 +15,7 @@ import indexRouter from "./routes/indexRouter.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import uploadRouter from "./routes/uploadRouter.js";
 import folderRouter from "./routes/folderRouter.js";
+import fileRouter from "./routes/fileRouter.js";
 
 dotenv.config();
 const app = express();
@@ -80,6 +81,7 @@ app.use("/auth", authRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/upload", uploadRouter);
 app.use("/folders", folderRouter);
+app.use("/files", fileRouter);
 
 app.use("/", indexRouter);
 

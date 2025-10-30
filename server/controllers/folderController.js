@@ -1,4 +1,6 @@
+import { getFolderData } from "../utils/folderUtils.js";
 import prisma from "../db/prisma.js";
+import { getSortParams } from "../utils/sortUtils.js";
 
 export const getAllFolders = async (req, res) => {
   const userId = req.user?.id;
@@ -12,24 +14,31 @@ export const getAllFolders = async (req, res) => {
   });
 };
 export const getFolderContents = async (req, res) => {
-  const { id } = req.params;
+  const folderId = req.params.id;
+  const userId = req.user.id;
+  const { sort } = req.query;
+  const { orderBy } = getSortParams(sort);
+  try {
+    const data = await getFolderData({ userId, orderBy, folderId });
 
-  const folder = await prisma.folder.findUnique({
-    where: { id },
-    include: { children: true, files: true },
-  });
+    if (!data) {
+      return res.status(404).render("pages/404", {
+        title: "Folder not found || Packrat",
+        message: "The folder you’re looking for doesn’t exist.",
+      });
+    }
 
-  if (!folder) {
-    return res.status(404).render("pages/404", {
-      title: "Folder not found || Packrat",
-      message: "The folder you’re looking for doesn’t exist.",
+    res.render("pages/dashboard", {
+      title: `${data.title} || Packrat`,
+      folders: data.folders,
+      files: data.files,
+      parentFolder: data.parentFolder,
+      sort,
     });
+  } catch (err) {
+    console.error("Error retrieving folders: ", err);
+    res.status(500).sent("Database Error");
   }
-
-  res.render("pages/folders/show", {
-    title: `${folder.name} || Packrat`,
-    folder,
-  });
 };
 
 export const createFolder = async (req, res) => {
