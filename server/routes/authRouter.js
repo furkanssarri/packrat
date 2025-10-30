@@ -12,7 +12,7 @@ authRouter.get("/signup", (_req, res) => {
     res.render("pages/signup", {
       title: "Sign Up || Packrat",
       errors: [],
-      FormData: {},
+      formData: {},
     });
   } catch (err) {
     console.error("Error getting the signup form,", err);

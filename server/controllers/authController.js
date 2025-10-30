@@ -7,7 +7,6 @@ export const signupPost = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log("The following errors happened: ", errors);
     return res.status(400).render("pages/signup", {
       title: "Sign Up | Packrat",
       errors: errors.array(),
