@@ -9,7 +9,7 @@ dashboardRouter.get("/", async (req, res) => {
   const { sort } = req.query;
   const userId = req.user.id;
 
-  const { orderBy } = getFolderData(sort);
+  const { orderBy } = getFolderData(userId, sort);
 
   try {
     const data = await getFolderData({ userId, orderBy });

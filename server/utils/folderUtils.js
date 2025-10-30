@@ -23,6 +23,7 @@ export const getFolderData = async ({ userId, orderBy, folderId = null }) => {
       folders: folder.children,
       files: folder.files,
       parentFolder: folder.parent,
+      currentFolder: folder,
     };
   } else {
     // Fetch the root level

@@ -6,16 +6,16 @@ export const moveFile = async (req, res) => {
 
   try {
     const file = await prisma.file.findUnique({
-      where: { id: parseInt(fileId) },
+      where: { id: fileId },
     });
 
     if (!file || file.userId !== userId)
       return res.status(403).send("Unauthorized to perform this action.");
 
     await prisma.file.update({
-      where: { id: parseInt(fileId) },
+      where: { id: fileId },
       data: {
-        folderId: targetFolderId ? parseInt(targetFolderId) : null,
+        folderId: targetFolderId ? targetFolderId : null,
       },
     });
 

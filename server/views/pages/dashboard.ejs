@@ -1,136 +1,151 @@
 <div class="container py-4">
   <!-- Breadcrumb Navigation -->
-  <% if (parentFolder) { %>
+  <% if (currentFolder) { %>
     <nav aria-label="breadcrumb" class="mb-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard">My Drive</a></li>
-        <% let ancestor = parentFolder; %>
-        <% while (ancestor) { %>
-          <li class="breadcrumb-item">
-            <a href="/folders/<%= ancestor.id %>"><%= ancestor.name %></a>
-          </li>
-          <% ancestor = ancestor.parent; %>
-        <% } %>
-        <li class="breadcrumb-item active" aria-current="page">
-          <%= title.split(' || ')[0] %>
-        </li>
+
+        <% let ancestor=parentFolder; %>
+          <% while (ancestor) { %>
+            <li class="breadcrumb-item">
+              <a href="/folders/<%= ancestor.id %>">
+                <%= ancestor.name %>
+              </a>
+            </li>
+            <% ancestor=ancestor.parent; %>
+              <% } %>
+
+                <li class="breadcrumb-item active" aria-current="page">
+                  <%= currentFolder.name %>
+                </li>
       </ol>
     </nav>
-  <% } else { %>
-    <h1 class="mb-4">My Drive</h1>
-  <% } %>
+    <% } else { %>
+      <h1 class="mb-4">My Drive</h1>
+      <% } %>
 
-  <!-- Upload Form -->
-  <form
-    action="/upload"
-    method="POST"
-    enctype="multipart/form-data"
-    class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 mb-4"
-  >
-    <input type="file" name="file" class="form-control" required style="max-width: 250px;">
-    <% if (parentFolder) { %>
-      <input type="hidden" name="parentId" value="<%= parentFolder.id %>">
-    <% } %>
-    <button type="submit" class="btn btn-primary">
-      <i class="bi bi-cloud-upload"></i> Upload
-    </button>
-  </form>
+        <!-- Upload Form -->
+        <form action="/upload" method="POST" enctype="multipart/form-data"
+          class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 mb-4">
+          <input type="file" name="file" class="form-control" required style="max-width: 250px;">
+          <% if (currentFolder) { %>
+            <input type="hidden" name="parentId" value="<%= currentFolder.id %>">
+            <% } %>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-cloud-upload"></i> Upload
+              </button>
+        </form>
 
-  <!-- Toolbar: Sort + View Toggle -->
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-    <div class="d-flex align-items-center gap-3">
-      <h4 class="fw-semibold mb-0"><i class="bi bi-folder"></i> My Files</h4>
-    </div>
+        <!-- Toolbar: Sort + View Toggle -->
+        <div
+          class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-semibold mb-0"><i class="bi bi-folder"></i> My Files</h4>
+          </div>
 
-    <div class="d-flex align-items-center gap-2">
-      <div class="dropdown me-2">
-        <% const sortLabels = { 'newest': 'Newest first', 'oldest': 'Oldest first', 'size-desc': 'Largest first', 'size-asc': 'Smallest first', 'type': 'File type', 'name': 'Name (A–Z)' }; %>
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
-          <%= sortLabels[sort] || 'Sort by' %>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-          <% Object.keys(sortLabels).forEach(key => { %>
-            <li><a class="dropdown-item <%= sort === key ? 'active' : '' %>" href="?sort=<%= key %>"><%= sortLabels[key] %></a></li>
-          <% }) %>
-        </ul>
-      </div>
-
-      <!-- View Toggle Buttons -->
-      <div class="btn-group" role="group" aria-label="View Toggle">
-        <button id="gridViewBtn" class="btn btn-outline-primary active" title="Grid view">
-          <i class="bi bi-grid"></i>
-        </button>
-        <button id="listViewBtn" class="btn btn-outline-primary" title="List view">
-          <i class="bi bi-list"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Folder/File Container -->
-  <div id="fileContainer" class="grid-view">
-    <!-- Folders Section -->
-    <% if (folders && folders.length > 0) { %>
-      <div class="row g-3 mb-4">
-        <% folders.forEach(folder => { %>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card h-100 folder-card text-center position-relative">
-              <a href="/folders/<%= folder.id %>" class="text-decoration-none text-reset">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                  <div class="folder-icon display-3 mb-2 text-warning">
-                    <i class="bi bi-folder-fill"></i>
-                  </div>
-                  <h6 class="card-title text-truncate mb-1"><%= folder.name %></h6>
-                  <p class="card-text text-muted small">
-                    Created on <%= new Date(folder.createdAt).toLocaleDateString() %>
-                  </p>
-                </div>
-              </a>
-              <form action="/folders/<%= folder.id %>/delete" method="POST" class="position-absolute top-0 end-0 m-2">
-                <button class="btn btn-sm btn-outline-danger" title="Delete Folder">
-                  <i class="bi bi-trash"></i>
+          <div class="d-flex align-items-center gap-2">
+            <div class="dropdown me-2">
+              <% const sortLabels={ 'newest' : 'Newest first' , 'oldest' : 'Oldest first' , 'size-desc'
+                : 'Largest first' , 'size-asc' : 'Smallest first' , 'type' : 'File type' , 'name' : 'Name (A–Z)' }; %>
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown"
+                  data-bs-toggle="dropdown">
+                  <%= sortLabels[sort] || 'Sort by' %>
                 </button>
-              </form>
+                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                  <% Object.keys(sortLabels).forEach(key=> { %>
+                    <li><a class="dropdown-item <%= sort === key ? 'active' : '' %>" href="?sort=<%= key %>">
+                        <%= sortLabels[key] %>
+                      </a></li>
+                    <% }) %>
+                </ul>
+            </div>
+
+            <!-- View Toggle Buttons -->
+            <div class="btn-group" role="group" aria-label="View Toggle">
+              <button id="gridViewBtn" class="btn btn-outline-primary active" title="Grid view">
+                <i class="bi bi-grid"></i>
+              </button>
+              <button id="listViewBtn" class="btn btn-outline-primary" title="List view">
+                <i class="bi bi-list"></i>
+              </button>
             </div>
           </div>
-        <% }) %>
-      </div>
-    <% } %>
+        </div>
 
-    <!-- Divider -->
-    <% if (folders && folders.length > 0 && files && files.length > 0) { %>
-      <hr class="my-4">
-    <% } %>
+        <!-- Main Folder/File Container -->
+        <div id="fileContainer" class="grid-view">
+          <!-- Folders Section -->
+          <% if (folders && folders.length> 0) { %>
+            <div class="row g-3 mb-4">
+              <% folders.forEach(folder=> { %>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <div class="card h-100 folder-card text-center position-relative">
+                    <a href="/folders/<%= folder.id %>" class="text-decoration-none text-reset">
+                      <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <div class="folder-icon display-3 mb-2 text-warning">
+                          <i class="bi bi-folder-fill"></i>
+                        </div>
+                        <h6 class="card-title text-truncate mb-1">
+                          <%= folder.name %>
+                        </h6>
+                        <p class="card-text text-muted small">
+                          Created on <%= new Date(folder.createdAt).toLocaleDateString() %>
+                        </p>
+                      </div>
+                    </a>
+                    <form action="/folders/<%= folder.id %>/delete" method="POST"
+                      class="position-absolute top-0 end-0 m-2">
+                      <button class="btn btn-sm btn-outline-danger" title="Delete Folder">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+            <% } %>
 
-    <!-- Files Section -->
-    <% if (files && files.length > 0) { %>
-      <div class="row g-3">
-        <% files.forEach(file => { %>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 file-item m-0">
-            <div class="card file-card h-100 text-center position-relative" data-filename="<%= file.storageName %>">
-              <div class="file-preview-wrapper position-relative">
-                <% const filePath = file.path || `/uploads/${file.storageName}`; %>
-                <% if (file.type?.startsWith('image/')) { %>
-                  <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
-                <% } else if (file.type === 'application/pdf') { %>
-                  <div class="file-icon"><i class="bi bi-file-earmark-pdf"></i></div>
-                <% } else { %>
-                  <div class="file-icon"><i class="bi bi-file-earmark"></i></div>
+              <!-- Divider -->
+              <% if (folders && folders.length> 0 && files && files.length > 0) { %>
+                <hr class="my-4">
                 <% } %>
-              </div>
-              <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center gap-0 gap-md-2">
-                <h6 class="card-title text-truncate mb-1 flex-grow-1" title="<%= file.name %>"><%= file.name %></h6>
-                <span class="card-text text-muted small mb-0"><%= (file.size / 1024).toFixed(1) %> KB</span>
-                <span class="card-text text-muted small">Uploaded on <%= new Date(file.createdAt).toLocaleString() %></span>
-              </div>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    <% } else if ((!folders || folders.length === 0) && (!files || files.length === 0)) { %>
-      <p class="text-muted">This folder is empty.</p>
-    <% } %>
-  </div>
+
+                  <!-- Files Section -->
+                  <% if (files && files.length> 0) { %>
+                    <div class="row g-3">
+                      <% files.forEach(file=> { %>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 file-item m-0">
+                          <div class="card file-card h-100 text-center position-relative"
+                            data-filename="<%= file.storageName %>">
+                            <div class="file-preview-wrapper position-relative">
+                              <% const filePath=file.path || `/uploads/${file.storageName}`; %>
+                                <% if (file.type?.startsWith('image/')) { %>
+                                  <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
+                                  <% } else if (file.type==='application/pdf' ) { %>
+                                    <div class="file-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                                    <% } else { %>
+                                      <div class="file-icon"><i class="bi bi-file-earmark"></i></div>
+                                      <% } %>
+                            </div>
+                            <div
+                              class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center gap-0 gap-md-2">
+                              <h6 class="card-title text-truncate mb-1 flex-grow-1" title="<%= file.name %>">
+                                <%= file.name %>
+                              </h6>
+                              <span class="card-text text-muted small mb-0">
+                                <%= (file.size / 1024).toFixed(1) %> KB
+                              </span>
+                              <span class="card-text text-muted small">Uploaded on <%= new
+                                  Date(file.createdAt).toLocaleString() %></span>
+                            </div>
+                          </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                    <% } else if ((!folders || folders.length===0) && (!files || files.length===0)) { %>
+                      <p class="text-muted">This folder is empty.</p>
+                      <% } %>
+        </div>
 </div>
 
 <!-- File Preview Modal -->

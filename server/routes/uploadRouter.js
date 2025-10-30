@@ -32,20 +32,26 @@ uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
         size,
         path: `/uploads/${filename}`,
         user: { connect: { id: userId } },
-        ...(parentId
-          ? { folder: { connect: { id: parseInt(parentId) } } }
-          : {}),
+        ...(parentId ? { folder: { connect: { id: parentId } } } : {}),
       },
     });
 
-    if (sort) {
-      if (parentId) {
-        res.redirect(`/folders/${parentId}`);
-      }
-      res.redirect(`/dashboard?sort=${encodeURIComponent(sort)}`);
-    } else {
-      res.redirect("/dashboard");
+    // after prisma.file.create(...)
+    const targetFolder = parentId
+      ? `/folders/${encodeURIComponent(parentId)}`
+      : null;
+
+    if (targetFolder) {
+      // preserve sort query if present
+      const sortQuery = sort ? `?sort=${encodeURIComponent(sort)}` : "";
+      return res.redirect(`${targetFolder}${sortQuery}`);
     }
+
+    if (sort) {
+      return res.redirect(`/dashboard?sort=${encodeURIComponent(sort)}`);
+    }
+
+    return res.redirect("/dashboard");
   } catch (err) {
     console.error("Error saving or retrieving files:", err);
     res.status(500).send("Internal Server Error");

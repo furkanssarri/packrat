@@ -33,6 +33,7 @@ export const getFolderContents = async (req, res) => {
       folders: data.folders,
       files: data.files,
       parentFolder: data.parentFolder,
+      currentFolder: data.currentFolder,
       sort,
     });
   } catch (err) {
