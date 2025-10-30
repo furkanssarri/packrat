@@ -16,9 +16,10 @@ dashboardRouter.get("/", async (req, res) => {
 
     res.render("pages/dashboard", {
       title: `${data.title} || Packrat`,
-      folders: data.folders,
-      files: data.files,
-      parentFolder: data.parentFolder,
+      folders: data.folders || [],
+      files: data.files || [],
+      parentFolder: data.parentFolder || null,
+      currentFolder: data.currentFolder || null, // ✅ add this
       sort,
     });
   } catch (err) {

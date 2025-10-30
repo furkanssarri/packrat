@@ -3,6 +3,7 @@ import prisma from "../db/prisma.js";
 import { generateHash } from "./passwordUtils.js";
 
 export const signupPost = async (req, res) => {
+  const { email, username, firstName, lastName, password } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -14,9 +15,6 @@ export const signupPost = async (req, res) => {
     });
   }
   try {
-    const { email, username, firstName, lastName, password } = req.body;
-    console.log(req.body);
-
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { username }],

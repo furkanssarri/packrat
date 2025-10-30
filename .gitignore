@@ -1,3 +1,5 @@
+# vsCode settings
+.vscode/
 # uploads
 server/uploads/
 # Logs

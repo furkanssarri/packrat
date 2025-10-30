@@ -26,6 +26,7 @@ const uploadDir = path.join(process.cwd(), "server/uploads");
 app.use(methodOverride("_method"));
 app.set("views", path.join(__dirname, "server/views"));
 app.set("view engine", "ejs");
+app.locals.basedir = path.join(__dirname, "server/views");
 app.use(expressLayouts);
 app.set("layout", "layout");
 app.use(express.urlencoded({ extended: true }));

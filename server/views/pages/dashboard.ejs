@@ -1,6 +1,6 @@
 <div class="container py-4">
   <!-- Breadcrumb Navigation -->
-  <% if (currentFolder) { %>
+  <% if (typeof currentFolder !=='undefined' && currentFolder) { %>
     <nav aria-label="breadcrumb" class="mb-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard">My Drive</a></li>
@@ -35,6 +35,16 @@
                 <i class="bi bi-cloud-upload"></i> Upload
               </button>
         </form>
+
+        <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-3 mb-4">
+          <!-- New Folder Form -->
+          <div>
+            <h6 class="fw-semibold mb-2">
+              <%= currentFolder ? 'Add Subfolder' : 'Create New Folder' %>
+            </h6>
+            <%- include('folders/_form', { parentId: currentFolder ? currentFolder.id : null }) %>
+          </div>
+        </div>
 
         <!-- Toolbar: Sort + View Toggle -->
         <div
