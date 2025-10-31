@@ -12,6 +12,7 @@ uploadRouter.post("/", upload.single("file"), async (req, res, next) => {
   const { sort, parentId } = req.body;
   const userId = req.user.id;
 
+  console.log(file);
   if (!file) return res.status(400).send("No file uploaded.");
 
   const filePath = `${userId}/${Date.now()}_${originalname}`;
