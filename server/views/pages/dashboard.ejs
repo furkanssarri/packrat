@@ -128,7 +128,7 @@
                           <div class="card file-card h-100 text-center position-relative"
                             data-filename="<%= file.storageName %>">
                             <div class="file-preview-wrapper position-relative">
-                              <% const filePath=file.path || `/uploads/${file.storageName}`; %>
+                            <% const filePath=file.url || `${file.storageName}`; %>
                                 <% if (file.type?.startsWith('image/')) { %>
                                   <img src="<%= filePath %>" alt="<%= file.name %>" class="file-thumb">
                                   <% } else if (file.type==='application/pdf' ) { %>
