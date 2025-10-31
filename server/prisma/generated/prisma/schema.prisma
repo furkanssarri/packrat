@@ -38,6 +38,7 @@ model File {
   size        Int // File size in bytes
   type        String // MIME type
   path        String // Virtual path in the app
+  url         String? // Supabase public or signed URL
   isPublic    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

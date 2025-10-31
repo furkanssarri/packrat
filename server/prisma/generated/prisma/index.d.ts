@@ -2650,6 +2650,7 @@ export namespace Prisma {
     size: number | null
     type: string | null
     path: string | null
+    url: string | null
     isPublic: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2664,6 +2665,7 @@ export namespace Prisma {
     size: number | null
     type: string | null
     path: string | null
+    url: string | null
     isPublic: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2678,6 +2680,7 @@ export namespace Prisma {
     size: number
     type: number
     path: number
+    url: number
     isPublic: number
     createdAt: number
     updatedAt: number
@@ -2702,6 +2705,7 @@ export namespace Prisma {
     size?: true
     type?: true
     path?: true
+    url?: true
     isPublic?: true
     createdAt?: true
     updatedAt?: true
@@ -2716,6 +2720,7 @@ export namespace Prisma {
     size?: true
     type?: true
     path?: true
+    url?: true
     isPublic?: true
     createdAt?: true
     updatedAt?: true
@@ -2730,6 +2735,7 @@ export namespace Prisma {
     size?: true
     type?: true
     path?: true
+    url?: true
     isPublic?: true
     createdAt?: true
     updatedAt?: true
@@ -2831,6 +2837,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url: string | null
     isPublic: boolean
     createdAt: Date
     updatedAt: Date
@@ -2864,6 +2871,7 @@ export namespace Prisma {
     size?: boolean
     type?: boolean
     path?: boolean
+    url?: boolean
     isPublic?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2883,6 +2891,7 @@ export namespace Prisma {
     size?: boolean
     type?: boolean
     path?: boolean
+    url?: boolean
     isPublic?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2899,6 +2908,7 @@ export namespace Prisma {
     size?: boolean
     type?: boolean
     path?: boolean
+    url?: boolean
     isPublic?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2915,6 +2925,7 @@ export namespace Prisma {
     size?: boolean
     type?: boolean
     path?: boolean
+    url?: boolean
     isPublic?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2922,7 +2933,7 @@ export namespace Prisma {
     folderId?: boolean
   }
 
-  export type FileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "storageName" | "size" | "type" | "path" | "isPublic" | "createdAt" | "updatedAt" | "userId" | "folderId", ExtArgs["result"]["file"]>
+  export type FileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "storageName" | "size" | "type" | "path" | "url" | "isPublic" | "createdAt" | "updatedAt" | "userId" | "folderId", ExtArgs["result"]["file"]>
   export type FileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     folder?: boolean | File$folderArgs<ExtArgs>
@@ -2954,6 +2965,7 @@ export namespace Prisma {
       size: number
       type: string
       path: string
+      url: string | null
       isPublic: boolean
       createdAt: Date
       updatedAt: Date
@@ -3392,6 +3404,7 @@ export namespace Prisma {
     readonly size: FieldRef<"File", 'Int'>
     readonly type: FieldRef<"File", 'String'>
     readonly path: FieldRef<"File", 'String'>
+    readonly url: FieldRef<"File", 'String'>
     readonly isPublic: FieldRef<"File", 'Boolean'>
     readonly createdAt: FieldRef<"File", 'DateTime'>
     readonly updatedAt: FieldRef<"File", 'DateTime'>
@@ -8333,6 +8346,7 @@ export namespace Prisma {
     size: 'size',
     type: 'type',
     path: 'path',
+    url: 'url',
     isPublic: 'isPublic',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -8593,6 +8607,7 @@ export namespace Prisma {
     size?: IntFilter<"File"> | number
     type?: StringFilter<"File"> | string
     path?: StringFilter<"File"> | string
+    url?: StringNullableFilter<"File"> | string | null
     isPublic?: BoolFilter<"File"> | boolean
     createdAt?: DateTimeFilter<"File"> | Date | string
     updatedAt?: DateTimeFilter<"File"> | Date | string
@@ -8611,6 +8626,7 @@ export namespace Prisma {
     size?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    url?: SortOrderInput | SortOrder
     isPublic?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8632,6 +8648,7 @@ export namespace Prisma {
     size?: IntFilter<"File"> | number
     type?: StringFilter<"File"> | string
     path?: StringFilter<"File"> | string
+    url?: StringNullableFilter<"File"> | string | null
     isPublic?: BoolFilter<"File"> | boolean
     createdAt?: DateTimeFilter<"File"> | Date | string
     updatedAt?: DateTimeFilter<"File"> | Date | string
@@ -8650,6 +8667,7 @@ export namespace Prisma {
     size?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    url?: SortOrderInput | SortOrder
     isPublic?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8672,6 +8690,7 @@ export namespace Prisma {
     size?: IntWithAggregatesFilter<"File"> | number
     type?: StringWithAggregatesFilter<"File"> | string
     path?: StringWithAggregatesFilter<"File"> | string
+    url?: StringNullableWithAggregatesFilter<"File"> | string | null
     isPublic?: BoolWithAggregatesFilter<"File"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"File"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"File"> | Date | string
@@ -9040,6 +9059,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9056,6 +9076,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9072,6 +9093,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9088,6 +9110,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9104,6 +9127,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9118,6 +9142,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9130,6 +9155,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9621,6 +9647,7 @@ export namespace Prisma {
     size?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    url?: SortOrder
     isPublic?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9639,6 +9666,7 @@ export namespace Prisma {
     size?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    url?: SortOrder
     isPublic?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9653,6 +9681,7 @@ export namespace Prisma {
     size?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    url?: SortOrder
     isPublic?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10476,6 +10505,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10491,6 +10521,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10569,6 +10600,7 @@ export namespace Prisma {
     size?: IntFilter<"File"> | number
     type?: StringFilter<"File"> | string
     path?: StringFilter<"File"> | string
+    url?: StringNullableFilter<"File"> | string | null
     isPublic?: BoolFilter<"File"> | boolean
     createdAt?: DateTimeFilter<"File"> | Date | string
     updatedAt?: DateTimeFilter<"File"> | Date | string
@@ -10955,6 +10987,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10970,6 +11003,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11145,6 +11179,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11160,6 +11195,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11220,6 +11256,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11235,6 +11272,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11285,6 +11323,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11300,6 +11339,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11331,6 +11371,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11346,6 +11387,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11361,6 +11403,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11383,6 +11426,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11398,6 +11442,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11413,6 +11458,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11536,6 +11582,7 @@ export namespace Prisma {
     size: number
     type: string
     path: string
+    url?: string | null
     isPublic?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11591,6 +11638,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11606,6 +11654,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11621,6 +11670,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

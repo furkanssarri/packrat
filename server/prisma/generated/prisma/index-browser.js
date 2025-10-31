@@ -140,6 +140,7 @@ exports.Prisma.FileScalarFieldEnum = {
   size: 'size',
   type: 'type',
   path: 'path',
+  url: 'url',
   isPublic: 'isPublic',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
