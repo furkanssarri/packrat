@@ -7,7 +7,9 @@ import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import passport from "passport";
 import dotenv from "dotenv";
+dotenv.config();
 import prisma from "./db/prisma.js";
+import supabase from "./config/supabaseClient.js";
 import "./config/passport.js";
 
 import authRouter from "./routes/authRouter.js";
@@ -17,7 +19,6 @@ import uploadRouter from "./routes/uploadRouter.js";
 import folderRouter from "./routes/folderRouter.js";
 import fileRouter from "./routes/fileRouter.js";
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
@@ -64,18 +65,58 @@ app.use((_req, res, next) => {
   next();
 });
 
-async function syncDatabaseFiles() {
-  const dbFiles = await prisma.file.findMany();
-  const diskFiles = await fs.readdir(uploadDir);
-
-  for (const dbFile of dbFiles) {
-    if (!diskFiles.includes(dbFile.storageName)) {
-      console.warn(`Removing missing file from DB: ${dbFile.storageName}`);
-      await prisma.file.delete({ where: { id: dbFile.id } });
-    }
-  }
-}
-syncDatabaseFiles();
+// TODO: FIX THIS LATER,
+// async function listAllSupabaseFiles(path = "") {
+//   const allFiles = [];
+//   const { data, error } = await supabase.storage
+//     .from("files")
+//     .list(path, { limit: 1000 });
+//
+//   if (error) throw error;
+//
+//   for (const item of data) {
+//     if (item.metadata) {
+//       // ✅ File entry
+//       allFiles.push(path ? `${path}/${item.name}` : item.name);
+//     } else {
+//       // ✅ Folder entry — recurse into it
+//       const subFiles = await listAllSupabaseFiles(
+//         path ? `${path}/${item.name}` : item.name,
+//       );
+//       allFiles.push(...subFiles);
+//     }
+//   }
+//
+//   return allFiles;
+// }
+//
+// export async function syncDatabaseFiles() {
+//   try {
+//     console.log("Starting Supabase sync...");
+//     const dbFiles = await prisma.file.findMany();
+//
+//     const supabaseFiles = await listAllSupabaseFiles();
+//     const supabaseFileSet = new Set(supabaseFiles);
+//
+//     let removedCount = 0;
+//
+//     for (const dbFile of dbFiles) {
+//       if (!supabaseFileSet.has(dbFile.storageName)) {
+//         console.warn(`Removing missing file from DB: ${dbFile.storageName}`);
+//         await prisma.file.delete({ where: { id: dbFile.id } });
+//         removedCount++;
+//       }
+//     }
+//
+//     console.log(
+//       `✅ Sync complete! Removed ${removedCount} orphaned DB entries.`,
+//     );
+//   } catch (err) {
+//     console.error("❌ Error syncing DB with Supabase:", err);
+//   }
+// }
+//
+// syncDatabaseFiles();
 app.use("/uploads", express.static(path.join(__dirname, "server/uploads")));
 
 app.use("/auth", authRouter);

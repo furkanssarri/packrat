@@ -3,10 +3,18 @@ import multer from "multer";
 import prisma from "../db/prisma.js";
 import supabase from "../config/supabaseClient.js";
 
+// Helper function to sanitize filenames
+function sanitizeFileName(fileName) {
+  return fileName
+    .normalize("NFD") // normalize accented characters
+    .replace(/[\u0300-\u036f]/g, "") // remove diacritics
+    .replace(/[^a-zA-Z0-9.-_]/g, "_"); // replace invalid chars with underscore
+}
+
 const uploadRouter = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-uploadRouter.post("/", upload.single("file"), async (req, res) => {
+uploadRouter.post("", upload.single("file"), async (req, res) => {
   const { file } = req;
   const { sort, parentId } = req.body;
   const userId = req.user.id;
@@ -14,19 +22,20 @@ uploadRouter.post("/", upload.single("file"), async (req, res) => {
   if (!file) return res.status(400).send("No file uploaded.");
 
   // Generate a unique storage name and path
-  const storageName = `${Date.now()}_${file.originalname}`;
+  const sanitizedName = sanitizeFileName(file.originalname);
+  const storageName = `${Date.now()}_${sanitizedName}`;
   const filePath = `${userId}/${storageName}`;
 
   try {
     // Upload file to Supabase Storage
-    const { error } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("files") // bucket name
       .upload(filePath, file.buffer, {
         contentType: file.mimetype,
         upsert: false,
       });
 
-    if (error) throw error;
+    if (uploadError) throw uploadError;
 
     // Retrieve public URL
     const { data, error: urlError } = await supabase.storage
@@ -42,7 +51,7 @@ uploadRouter.post("/", upload.single("file"), async (req, res) => {
     await prisma.file.create({
       data: {
         name: file.originalname,
-        storageName, // ✅ fixed — not undefined anymore
+        storageName: storageName,
         type: file.mimetype,
         size: file.size,
         path: filePath,
